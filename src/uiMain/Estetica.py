@@ -23,14 +23,14 @@ def aviso(text):
     print(negrita(("> > > " + text + " < < <")))
 
 
-def identacion(text, n):
+def identacionO(text, n):
     cadena = ""
     for i in range(n):
         cadena += "    "
     print(cadena + text)
 
 
-def identacionO(text):
+def identacion(text):
     print("    " + text)
 
 

@@ -25,7 +25,7 @@ class Asiento:
         self.status = "Disponible"
 
     def getInfo(self):
-        return self.n_silla + ". Tipo: " + self.tipo + ", Valor: $" + self.valor
+        return f"{self.n_silla}. Tipo: {self.tipo}, Valor: ${self.valor}"
 
     # Métodos de acceso (Getters y Setters)
 

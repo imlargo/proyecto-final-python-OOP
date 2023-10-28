@@ -14,7 +14,7 @@ class Vuelo:
         self.ORIGEN = origen
 
     @staticmethod
-    def generarVuelos(self, cantidad, origen, destino):
+    def generarVuelos(cantidad, origen, destino):
         vuelos = []
         for x in range(0, cantidad):
             aerolinea = "Nn"
