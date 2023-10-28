@@ -1063,399 +1063,286 @@ def confirmarTransaccion(user, valor):
 
     
 
-    def canjearMillas(user):
-
-        /*
-         * Permite al usuario canjear millas por ciertos descuentos
-         * 
-         * Estructura y proceso:
-         * Se le da a el usuario las opciones disponibles para canjear sus millas
-         * Selecciona la opcion y se pide confirmacion, al confirmar, se descuentan las
-         * millas, se instancia el tipo de descuento
-         * Si el usuario decide aplicar el descuendo instantaneamente se procede a hacer
-         * el proceso
-         * Si no, se guarda el boleto en una lista de descuentos asociada al usuario,
-         * posteriormente el usuario puede aplicar el descuento
-         * usando la opcion 4. Aplicar descuentos
-         */
-        seleccionado("Canjear millas")
-        separadorGrande()
-        identacion("Hola " + colorTexto(user.getNombre(), "verde"), 3)
+def canjearMillas(user):
+    seleccionado("Canjear millas")
+    separadorGrande()
+    identacion(f"Hola {user.getNombre()}", 3)
+    salto()
+    opcion = None
+    
+    while (opcion != 6):
+        identacion("En este momento usted posee " + colorTexto("" + user.getMillas(), "morado") + " millas")
         salto()
-
-        opcion
-
-        do:
-
-            identacion("En este momento usted posee " + colorTexto("" + user.getMillas(), "morado") + " millas")
-            salto()
-
-            prompt("Escoja en que desea canjear sus millas")
-            salto()
-
-            # print("Menu")
-            identacion("1. Mejora de silla" + " (" + upgradeAsiento.costoMillas + ")")
-            identacion("2. Descuento vuelo" + " (" + descuentoVuelo.costoMillas + ")")
-            identacion("3. Descuento maleta" + " (" + descuentoMaleta.costoMillas + ")")
-            identacion("4. Aplicar descuentos")
-            identacion("5. Ver descuentos del usuario")
-            identacion("6. Volver al menú anterior")
-            salto()
-            prompt("> Seleccione una opción (1-6): ")
-            opcion = inputI()
-
-            separador()
-
-            # Imprimir las opciones
-
-            match (opcion):
-                case 1:
-                    match (verificarMillas(user, upgradeAsiento.costoMillas)):
-                        case 1:
-                            user.descontarMillas(upgradeAsiento.costoMillas)
-
-                            printNegrita("Canjeado con éxito, millas restantes: "
-                                    + colorTexto("" + user.getMillas(), "verde"))
-                            separador()
-                            prompt("Desea aplicar el descuendo de una vez? (1 si / 0 no)")
-                            aplicar = inputI()
-
-                            if (aplicar == 1):
-                                Descuento descuento = upgradeAsiento(user)
-                                millasAsiento(user, descuento)
-                             else:
-                                Descuento descuento = upgradeAsiento(user)
-                                descuento.guardar()
-                                separador()
-                                printNegrita(colorTexto(
-                                        "Se guardo el descuento en su cuenta, puedes aplicarlo cuando desees",
-                                        "verde"))
-                                salto()
-                                continuar()
-                                separador()
-                            
-                            
-
-                        case -1:
-                            prompt("Millas insuficientes!")
-                            
-                        case 0:
-                            prompt("Operacion cancelada")
-                            
-                        case _:
-                            pass
-                            
-                    
-
-                    
-
-                case 2:
-
-                    match (verificarMillas(user, descuentoVuelo.costoMillas)):
-
-                        case 1:
-
-                            user.descontarMillas(descuentoVuelo.costoMillas)
-
-                            printNegrita("Canjeado con éxito, millas restantes: "
-                                    + colorTexto("" + user.getMillas(), "verde"))
-                            separador()
-                            prompt("Desea aplicar el descuendo de una vez? (1 si / 0 no)")
-                            aplicar = inputI()
-
-                            if (aplicar == 1):
-                                Descuento descuento = descuentoVuelo(user)
-                                millasVuelo(user, descuento)
-                             else:
-                                Descuento descuento = descuentoVuelo(user)
-                                descuento.guardar()
-                                separador()
-                                printNegrita(colorTexto(
-                                        "Se guardo el descuento en su cuenta, puedes aplicarlo cuando desees",
-                                        "verde"))
-                                salto()
-                                continuar()
-                                separador()
-                            
-
-                            
-
-                        case -1:
-                            prompt("Millas insuficientes!")
-                            
-                        case 0:
-                            prompt("Operacion cancelada")
-                            
-                        case _:
-                            pass
-                            
-
-                    
-                    
-
-                case 3:
-                    # Con este cupon se tiene derecho a un % de descuento al del precio TOTAL de
-                    # maletas en un vuelo
-                    # Se puede aplicar directamente aqui (seleccionando un vuelo y recibiendo %) o
-                    # al llamar el check in
-                    match (verificarMillas(user, descuentoMaleta.costoMillas)):
-                        case 1:
-
-                            user.descontarMillas(descuentoMaleta.costoMillas)
-                            printNegrita("Canjeado con éxito, millas restantes: "
-                                    + colorTexto("" + user.getMillas(), "verde"))
-                            separador()
-                            prompt("Desea aplicar el descuendo de una vez? (1 si / 0 no)")
-                            aplicar = inputI()
-
-                            if (aplicar == 1):
-
-                                Descuento descuento = descuentoMaleta(user)
-                                millasMaleta(user, descuento)
-                             else:
-                                Descuento descuento = descuentoMaleta(user)
-                                descuento.guardar()
-                                separador()
-                                printNegrita(colorTexto(
-                                        "Se guardo el descuento en su cuenta, puedes aplicarlo cuando desees",
-                                        "verde"))
-                                salto()
-                                continuar()
-                                separador()
-                            
-                            
-
-                        case -1:
-                            prompt("Millas insuficientes!")
-                            
-                        case 0:
-                            prompt("Operacion cancelada")
-                            
-                        case _:
-                            pass
-                            
-                    
-                    
-
-                case 4:
-                    # Aplicar descuento
-
-                    ArrayList<Descuento> descuentos = verDescuentos(user, 1)
-
-                    separador()
-
-                    # Solicitar al usuario que seleccione un vuelo y se selecciona.
-                    prompt("Por favor, seleccione el número del descuento deseado: ")
-                    index = inputI()
-                    Descuento descuento = descuentos.get(index)
-
-                    match (descuento.getTipo()):
-                        case "Mejora de asiento":
+        prompt("Escoja en que desea canjear sus millas")
+        salto()
+        # print("Menu")
+        identacion("1. Mejora de silla" + " (" + upgradeAsiento.costoMillas + ")")
+        identacion("2. Descuento vuelo" + " (" + descuentoVuelo.costoMillas + ")")
+        identacion("3. Descuento maleta" + " (" + descuentoMaleta.costoMillas + ")")
+        identacion("4. Aplicar descuentos")
+        identacion("5. Ver descuentos del usuario")
+        identacion("6. Volver al menú anterior")
+        salto()
+        prompt("> Seleccione una opción (1-6): ")
+        opcion = inputI()
+        separador()
+        # Imprimir las opciones
+        match (opcion):
+            case 1:
+                match (verificarMillas(user, upgradeAsiento.costoMillas)):
+                    case 1:
+                        user.descontarMillas(upgradeAsiento.costoMillas)
+                        printNegrita("Canjeado con éxito, millas restantes: "
+                                + colorTexto("" + user.getMillas(), "verde"))
+                        separador()
+                        prompt("Desea aplicar el descuendo de una vez? (1 si / 0 no)")
+                        aplicar = inputI()
+                        if (aplicar == 1):
+                            descuento = upgradeAsiento(user)
                             millasAsiento(user, descuento)
-                            
-
-                        case "Descuento Vuelo":
-                            millasVuelo(user, descuento)
-                            
-
-                        case "Descuento de maleta":
-                            millasMaleta(user, descuento)
-                            
-
-                        case _:
-                            pass
-                            
-                    
-
-                    
-
-                case 5:
-                    # Ver descuento
-                    prompt("Desea ver solo los descuentos disponibles/canjeados o los aplicados tambien (1 / 0)")
-                    op = inputI()
-                    verDescuentos(user, op)
-                    salto()
-                    continuar()
-                    
-
-                case 6:
-                    aviso(colorTexto("Volviendo al menu", "rojo"))
-                    separador()
-                    
-
-                case _:
-                    pass
-                    aviso(colorTexto("Opción incorrecta", "rojo"))
-                    
-            
-
-            separadorGrande()
-
-         while (opcion != 6)
-    
-
-    def millasAsiento(user, Descuento descuento):
-
-        boleto = selecBoleto(user)
-        asiento = boleto.getAsiento()
-        # se verifica que el asiento sea economico
-        # si es vip ya no se puede mejorar
-
-        if (asiento.getTipo() == "Economico"):
-
-            # Hacer asiento vip
-            asientos = (boleto.getVuelo()).getAsientos()
-
-            printNegrita(colorTexto("Asientos disponibles", "morado"))
-            salto()
-            for asientoTemp in asientos:
-                if (asientoTemp.getTipo() == ("Vip")):
-                    identacion(asientoTemp.getInfo(), 2)
+                        else:
+                            descuento = upgradeAsiento(user)
+                            descuento.guardar()
+                            separador()
+                            printNegrita(colorTexto(
+                                    "Se guardo el descuento en su cuenta, puedes aplicarlo cuando desees",
+                                    "verde"))
+                            salto()
+                            continuar()
+                            separador()
+                    case -1:
+                        prompt("Millas insuficientes!")
+                        
+                    case 0:
+                        prompt("Operacion cancelada")
+                        
+                    case _:
+                        pass
+                        
                 
-            
-
-            salto()
-            prompt("Por favor, seleccione el número del asiento deseado: ")
-            indexAsiento = inputI()
-
-            # ... Cambiar y reasignar todo
-            newAsiento = asientos[indexAsiento - 1]
-            boleto.upgradeAsientoMillas(asiento, newAsiento)
-            descuento.aplicarDescuento(boleto)
-
-            separador()
-            printNegrita(colorTexto("Mejora de asiento realizado con exitOpo", "verde"))
-            salto()
-
-            printNegrita(colorTexto("Detalles del nuevo asiento:", "morado"))
-            salto()
-            identacion((boleto.getAsiento()).getInfo())
-            salto()
-            continuar()
-
-         else:
-
-            descuento.guardar()
-
-            separador()
-            printNegrita(colorTexto(
-                    "Su asiento ya es VIP, se guardo el descuento en su cuenta", "verde"))
-            salto()
-            continuar()
-            separador()
-
-        
-
+                
+            case 2:
+                match (verificarMillas(user, descuentoVuelo.costoMillas)):
+                    case 1:
+                        user.descontarMillas(descuentoVuelo.costoMillas)
+                        printNegrita("Canjeado con éxito, millas restantes: "
+                                + colorTexto("" + user.getMillas(), "verde"))
+                        separador()
+                        prompt("Desea aplicar el descuendo de una vez? (1 si / 0 no)")
+                        aplicar = inputI()
+                        if (aplicar == 1):
+                            descuento = descuentoVuelo(user)
+                            millasVuelo(user, descuento)
+                        else:
+                            descuento = descuentoVuelo(user)
+                            descuento.guardar()
+                            separador()
+                            printNegrita(colorTexto(
+                                    "Se guardo el descuento en su cuenta, puedes aplicarlo cuando desees",
+                                    "verde"))
+                            salto()
+                            continuar()
+                            separador()
+                    case -1:
+                        prompt("Millas insuficientes!")
+                        
+                    case 0:
+                        prompt("Operacion cancelada")
+                        
+                    case _:
+                        pass
+                        
+                
+            case 3:
+                match (verificarMillas(user, descuentoMaleta.costoMillas)):
+                    case 1:
+                        user.descontarMillas(descuentoMaleta.costoMillas)
+                        printNegrita("Canjeado con éxito, millas restantes: "
+                                + colorTexto("" + user.getMillas(), "verde"))
+                        separador()
+                        prompt("Desea aplicar el descuendo de una vez? (1 si / 0 no)")
+                        aplicar = inputI()
+                        if (aplicar == 1):
+                            descuento = descuentoMaleta(user)
+                            millasMaleta(user, descuento)
+                        else:
+                            descuento = descuentoMaleta(user)
+                            descuento.guardar()
+                            separador()
+                            printNegrita(colorTexto(
+                                    "Se guardo el descuento en su cuenta, puedes aplicarlo cuando desees",
+                                    "verde"))
+                            salto()
+                            continuar()
+                            separador()
+                    case -1:
+                        prompt("Millas insuficientes!")
+                        
+                    case 0:
+                        prompt("Operacion cancelada")
+                        
+                    case _:
+                        pass
+                        
+            case 4:
+                # Aplicar descuento
+                descuentos = verDescuentos(user, 1)
+                separador()
+                # Solicitar al usuario que seleccione un vuelo y se selecciona.
+                prompt("Por favor, seleccione el número del descuento deseado: ")
+                index = inputI()
+                descuento = descuentos.get(index)
+                match (descuento.getTipo()):
+                    case "Mejora de asiento":
+                        millasAsiento(user, descuento)
+                        
+                    case "Descuento Vuelo":
+                        millasVuelo(user, descuento)
+                        
+                    case "Descuento de maleta":
+                        millasMaleta(user, descuento)
+                        
+                    case _:
+                        pass
+                        
+            case 5:
+                # Ver descuento
+                prompt("Desea ver solo los descuentos disponibles/canjeados o los aplicados tambien (1 / 0)")
+                op = inputI()
+                verDescuentos(user, op)
+                salto()
+                continuar()
+                
+            case 6:
+                aviso(colorTexto("Volviendo al menu", "rojo"))
+                separador()
+                
+            case _:
+                pass
+                aviso(colorTexto("Opción incorrecta", "rojo"))        
+        separadorGrande()
     
 
-    def millasVuelo(user, Descuento descuento):
-        boleto = selecBoleto(user)
+def millasAsiento(user, descuento):
+    boleto = selecBoleto(user)
+    asiento = boleto.getAsiento()
+    # se verifica que el asiento sea economico
+    # si es vip ya no se puede mejorar
+
+    if (asiento.getTipo() == "Economico"):
+        # Hacer asiento vip
+        asientos = (boleto.getVuelo()).getAsientos()
+        printNegrita(colorTexto("Asientos disponibles", "morado"))
+        salto()
+        for asientoTemp in asientos:
+            if (asientoTemp.getTipo() == ("Vip")):
+                identacion(asientoTemp.getInfo(), 2)
+            
+        
+        salto()
+        prompt("Por favor, seleccione el número del asiento deseado: ")
+        indexAsiento = inputI()
+        # ... Cambiar y reasignar todo
+        newAsiento = asientos[indexAsiento - 1]
+        boleto.upgradeAsientoMillas(asiento, newAsiento)
         descuento.aplicarDescuento(boleto)
-
-        # Listo, su costo de maleta ha sdo reducido en un % y se ha regresado el dinero
-        printNegrita(colorTexto("Se ha aplicado un " +
-                descuentoVuelo.descuento + "% de descuento en el valor de su vuelo, ahorro de: "
-                + ("$" + ((int) (boleto.getValorInicial() * (0.2)))), "verde"))
-
+        separador()
+        printNegrita(colorTexto("Mejora de asiento realizado con exitOpo", "verde"))
+        salto()
+        printNegrita(colorTexto("Detalles del nuevo asiento:", "morado"))
+        salto()
+        identacion((boleto.getAsiento()).getInfo())
         salto()
         continuar()
+    else:
+        descuento.guardar()
+        separador()
+        printNegrita(colorTexto(
+                "Su asiento ya es VIP, se guardo el descuento en su cuenta", "verde"))
+        salto()
+        continuar()
+        separador()
+        
+
+
+
+def millasVuelo(user, descuento):
+    boleto = selecBoleto(user)
+    descuento.aplicarDescuento(boleto)
+    # Listo, su costo de maleta ha sdo reducido en un % y se ha regresado el dinero
+    printNegrita(f"Se ha aplicado un {descuentoVuelo.descuento} % de descuento en el valor de su vuelo, ahorro de: $ {boleto.getValorInicial() * (0.2)}")
+    salto()
+    continuar()
     
 
-
-
-
-    def ArrayList<Descuento> verDescuentos(user, op):
-
-        separador()
-
-        ArrayList<Descuento> descuentos = user.getDescuentos()
-        identacion(negrita(colorTexto("Descuentos disponibles:", "morado")), 4)
-        salto()
-
-        if (op == 1):
-            # Iterar a través del historial de boletos
-            for (i = 0 i < descuentos.size() i += 1):
-                Descuento descuento = descuentos.get(i)
-
-                if (descuento.isUsado() == false):
-                    # Mostrar información de cada boleto en la lista
-                    identacion(i + ". " + descuento.getInfo())
-
-                
-            
-         else:
-            # Iterar a través del historial de boletos
-            for (i = 0 i < descuentos.size() i += 1):
-                Descuento descuento = descuentos.get(i)
+def verDescuentos(user, op):
+    separador()
+    descuentos = user.getDescuentos()
+    identacion(negrita(colorTexto("Descuentos disponibles:", "morado")), 4)
+    salto()
+    if (op == 1):
+        # Iterar a través del historial de boletos
+        for i in range(len(descuentos)):
+            descuento = descuentos.get(i)
+            if (descuento.isUsado() == False):
                 # Mostrar información de cada boleto en la lista
                 identacion(i + ". " + descuento.getInfo())
-            
-        
-
-        return descuentos
-    
-
-    public static Boleto selecBoleto(user):
-        # Obtener el historial de boletos del usuario
-        historial = user.getHistorial()
-        salto()
-        printNegrita(colorTexto("Información de los vuelos:", "morado"))
-        salto()
-
+    else:
         # Iterar a través del historial de boletos
-        for i in range(len(historial)):
-            boleto = historial[i]
+        for i in range(len(descuentos)):
+            descuento = descuentos.get(i)
             # Mostrar información de cada boleto en la lista
-            identacion(i + ". " + boleto.getInfo())
+            identacion(i + ". " + descuento.getInfo())
+    return descuentos
+    
+def selecBoleto(user):
+    # Obtener el historial de boletos del usuario
+    historial = user.getHistorial()
+    salto()
+    printNegrita(colorTexto("Información de los vuelos:", "morado"))
+    salto()
+    # Iterar a través del historial de boletos
+    for i in range(len(historial)):
+        boleto = historial[i]
+        # Mostrar información de cada boleto en la lista
+        identacion(i + ". " + boleto.getInfo())
+    
+    salto()
+    prompt("Por favor, seleccione el número del vuelo deseado:")
+    indexVuelo = inputI()
+    # Obtener el boleto seleccionado por el usuario
+    boleto = historial.get(indexVuelo)
+    separador()
+    print(colorTexto("Vuelo seleccionado, información detallada:", "morado"))
+    salto()
+    identacion(boleto.getInfo())
+    salto()
+    continuar()
+    salto()
+    return boleto
+
+def verificarMillas(user, valor):
+    prompt("Confirmar canjeo de millas (1 si / 0 no)")
+    confirmacion = inputI()
+    salto()
+    if (confirmacion == 1):
+        if (user.getMillas() >= valor):
+            return 1
+        else:
+            return -1
         
-        salto()
-
-        prompt("Por favor, seleccione el número del vuelo deseado:")
-        indexVuelo = inputI()
-
-        # Obtener el boleto seleccionado por el usuario
-        boleto = historial.get(indexVuelo)
-
-        separador()
-
-        print(colorTexto("Vuelo seleccionado, información detallada:", "morado"))
-        salto()
-        identacion(boleto.getInfo())
-
-        salto()
-        continuar()
-        salto()
-        return boleto
+    else:
+        return 0
+        
     
 
-    def verificarMillas(user, valor):
-
-        prompt("Confirmar canjeo de millas (1 si / 0 no)")
-        confirmacion = inputI()
-        salto()
-
-        if (confirmacion == 1):
-            if (user.getMillas() >= valor):
-                return 1
-             else:
-                return -1
-            
-         else:
-            return 0
-        
-    
-
-    def millasMaleta(user, Descuento descuento):
-        boleto = selecBoleto(user)
-        descuento.aplicarDescuento(boleto)
-
-        # Listo, su costo de maleta ha sdo reducido en un % y se ha regresado el dinero
-        printNegrita(colorTexto("Se ha aplicado un " +
-                descuentoMaleta.descuento + "% de descuento en el costo de su equipaje, ahorro de: $"
-                + ("" + ((int) (boleto.getValorInicial() * 0.2))), "verde"))
-
-        salto()
-        continuar()
+def millasMaleta(user, descuento):
+    boleto = selecBoleto(user)
+    descuento.aplicarDescuento(boleto)
+    # Listo, su costo de maleta ha sdo reducido en un % y se ha regresado el dinero
+    printNegrita(f"Se ha aplicado un {descuentoMaleta.descuento}% de descuento en el costo de su equipaje, ahorro de: ${boleto.getValorInicial() * 0.2}")
+    salto()
+    continuar()
     
 
 
