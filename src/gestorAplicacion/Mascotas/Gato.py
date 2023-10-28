@@ -1,74 +1,43 @@
+class Gato(Animal):
 
-public class Gato extends Animal implements Serializable {
-    private static final long serialVersionUID = 1L;
+    razasExcluidasCabina = ["Siamés", "Bengal", "Sphynx", "Persa"]
+    razasExcluidasBodega = ["Bengal", "Siames"]
 
-    private double tamano; // Tamaño del gato
-    private double peso;  // Peso del gato
+    PESO_MAXIMO_BODEGA = 20.0
+    TAMANO_MAXIMO_BODEGA = 30.0
+    PESO_MAXIMO_CABINA = 6.0
+    TAMANO_MAXIMO_CABINA = 15.0
 
-    private static ArrayList<String> razasExcluidasCabina = new ArrayList<>();
+    def __init__(self, nombre, raza, tamano, peso):
+        super(nombre, raza)
+        self.tamano = tamano
+        self.peso = peso
 
-    private static ArrayList<String> razasExcluidasBodega = new ArrayList<>();
-    private static final double PESO_MAXIMO_BODEGA = 20.0;
+    def getPeso(self):
+        return self.peso
 
-    private static final double TAMANO_MAXIMO_BODEGA = 30.0;
+    def setPeso(self, peso):
+        self.peso = peso
 
-    private static final double PESO_MAXIMO_CABINA = 6.0;
+    def getTamano(self):
+        return self.tamano
 
-    private static final double TAMANO_MAXIMO_CABINA = 15.0;
+    def setTamano(self, tamano):
+        self.tamano = tamano
 
-    static {
-        // Agregar las razas que están excluidas de volar en la cabina
-        razasExcluidasCabina.add("Siamés");
-        razasExcluidasCabina.add("Bengal");
-        razasExcluidasCabina.add("Sphynx");
-        razasExcluidasCabina.add("Persa");
+    def puedeViajarEnCabina(self):
+        if (not self.raza in Gato.razasExcluidasCabina and self.getPeso() <= Gato.PESO_MAXIMO_CABINA
+                and self.getTamano() <= Gato.TAMANO_MAXIMO_CABINA):
+            return True
 
-        // Agregar las razas que están excluidas de volar en la bodega
-        razasExcluidasBodega.add("Bengal");
-        razasExcluidasBodega.add("Siames");
-    }
+        return False
 
-    public Gato(String nombre, String raza, double tamano, double peso) {
-        super(nombre, raza);
-        this.tamano = tamano;
-        this.peso = peso;
-    }
+    def puedeViajarEnBodega(self):
+        if (not self.raza in Gato.razasExcluidasBodega and self.getPeso() <= Gato.PESO_MAXIMO_BODEGA
+                and self.getTamano() <= Gato.TAMANO_MAXIMO_BODEGA):
+            return True
 
-    public double getPeso() {
-        return this.peso;
-    }
+        return False
 
-    public void setPeso(double peso) {
-        this.peso = peso;
-    }
-
-    public double getTamano() {
-        return this.tamano;
-    }
-
-    public void setTamano(double tamano) {
-        this.tamano = tamano;
-    }
-
-    @Override
-    public boolean puedeViajarEnCabina() {
-        if (!razasExcluidasCabina.contains(raza) && getPeso() <= PESO_MAXIMO_CABINA
-                && getTamano() <= TAMANO_MAXIMO_CABINA) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean puedeViajarEnBodega() {
-        if (!razasExcluidasBodega.contains(raza) && getPeso() <= PESO_MAXIMO_BODEGA
-                && getTamano() <= TAMANO_MAXIMO_BODEGA) {
-            return true;
-        }
-        return false;
-    }
-
-    public String toString() {
-        return "nombre: " + this.getNombre() + ", raza: " + this.getRaza() + ", especie: Gato";
-    }
-}
+    def toString(self):
+        return "nombre: " + self.getNombre() + ", raza: " + self.getRaza() + ", especie: Gato"

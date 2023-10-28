@@ -1,29 +1,23 @@
+class Animal:
 
-public abstract class Animal {
-    protected String nombre; // Nombre del animal
-    protected String raza;  // Raza del animal
-    public Animal(String nombre, String raza) {
-        this.nombre = nombre;
-        this.raza = raza;
-    }
-    
-    public String getNombre() {
-        return this.nombre;
-    }
-    
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-    
-    public String getRaza() {
-        return this.raza;
-    }
-    
-    public void setRaza(String raza) {
-        this.raza = raza;
-    }
-    
-    public abstract boolean puedeViajarEnCabina();
+    def __init__(self, nombre, raza):
+        self.nombre = nombre
+        self.raza = raza
 
-    public abstract boolean puedeViajarEnBodega();
-}
+    def getNombre(self):
+        return self.nombre
+
+    def setNombre(self, nombre):
+        self.nombre = nombre
+
+    def getRaza(self):
+        return self.raza
+
+    def setRaza(self, raza):
+        self.raza = raza
+
+    def puedeViajarEnCabina(self):
+        pass
+
+    def puedeViajarEnBodega(self):
+        pass
