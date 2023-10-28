@@ -1,3 +1,5 @@
+from .Animal import Animal
+
 class Gato(Animal):
 
     razasExcluidasCabina = ["Siamés", "Bengal", "Sphynx", "Persa"]

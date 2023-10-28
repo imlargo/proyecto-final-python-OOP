@@ -1,3 +1,5 @@
+from .Pasajero import Pasajero
+from .ServiciosEspeciales import ServiciosEspeciales
 
 class Boleto:
 
@@ -108,7 +110,7 @@ class Boleto:
 
     def getInfo(self):
 
-        return negrita("Precio: ") + colorTexto("$" + self.valor, "verde") + negrita(", Tipo: ") + self.tipo + negrita(", Origen-Destino: ") + self.getOrigenDestino() + negrita(", Numero de asiento: ") + self.asiento.getN_silla() + negrita(", Estado: ") + self.status + negrita(", N. Maletas: ") + self.equipaje.size() + negrita(", Servicios contratados: ") + self.serviciosContratados.size()
+        return f"Precio: ${self.valor}, Tipo: {self.tipo}, Origen-Destino: {self.getOrigenDestino()}, Numero de asiento: {self.asiento.getN_silla()}, Estado: {self.status}, N. Maletas: {len(self.equipaje)}, Servicios contratados: {len(self.serviciosContratados)}"
 
     # ...Metodos def get yself set...
 

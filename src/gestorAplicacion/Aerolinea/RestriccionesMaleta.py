@@ -1,5 +1,4 @@
-
-class RestriccionesMaleta: #interfaz
+class RestriccionesMaleta:  # interfaz
     peso = 60
     largo = 250
     ancho = 250

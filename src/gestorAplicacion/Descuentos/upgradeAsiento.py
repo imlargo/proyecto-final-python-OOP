@@ -1,3 +1,5 @@
+from .Descuento import Descuento
+
 class upgradeAsiento(Descuento):
     costoMillas = 20
 

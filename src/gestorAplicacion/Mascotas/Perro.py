@@ -1,3 +1,5 @@
+from .Animal import Animal
+
 class Perro(Animal):
 
     razasExcluidasCabina = ["Bulldog", "Dóberman", "Pitbull", "Rottweiler"]

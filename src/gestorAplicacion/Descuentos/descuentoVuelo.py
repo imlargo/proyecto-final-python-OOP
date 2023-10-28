@@ -1,3 +1,4 @@
+from .Descuento import Descuento
 
 class descuentoVuelo(Descuento):
 

@@ -1,3 +1,5 @@
+from .Asiento import Asiento
+
 class Vuelo:
 
     def __init__(self, origen, destino, aerolinea, id, tiempoSalida, tiempoLlegada):

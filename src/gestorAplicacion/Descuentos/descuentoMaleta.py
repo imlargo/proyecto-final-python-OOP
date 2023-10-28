@@ -1,3 +1,5 @@
+from .Descuento import Descuento
+
 class descuentoMaleta(Descuento):
     
     costoMillas = 20   

@@ -1,5 +1,4 @@
-
-
+from .RestriccionesMaleta import RestriccionesMaleta
 class Maleta(RestriccionesMaleta):
 
     precioMaleta = 10.0

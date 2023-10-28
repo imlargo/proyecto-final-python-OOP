@@ -32,4 +32,4 @@ class Descuento:  # Abstracta
         pass
 
     def getInfo(self):
-        return negrita("Tipo: ") + self.tipo + negrita(", Estado: ") + self.estado
+        return f"Tipo: {self.tipo}, Estado: {self.estado}"

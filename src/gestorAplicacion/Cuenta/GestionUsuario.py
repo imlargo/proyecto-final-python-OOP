@@ -1,12 +1,14 @@
+from .Usuario import Usuario
+
 class GestionUsuario:
 
     def __init__(self):
-        self.Usuarios = []
+        self.usuarios = []
         self.inventarioMaletas = []
         self.user = Usuario("Jaime A. Guzman", "usuario@gmail.com", "123", 0)
         self.user.setDinero(2000)
         self.user.setMillas(150)
-        self.Usuarios.append(user)
+        self.usuarios.append(self.user)
 
     # end def
     def iniciarSesion(self, mail, contrasena):
