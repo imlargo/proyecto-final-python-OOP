@@ -1,301 +1,209 @@
-package gestorAplicacion.Aerolinea;
 
-import java.io.Serializable;
-import java.util.*;
+class Boleto:
 
-import static uiMain.Estetica.*;
+    cont = 0
 
-import gestorAplicacion.Aerolinea.*;
-import gestorAplicacion.Cuenta.*;
-import gestorAplicacion.Descuentos.*;
-import gestorAplicacion.Mascotas.*;
-public class Boleto implements Serializable {
+    def __init__(self, origen, destino, propietario, vuelo):
+        Boleto.cont += 1
+        self.origen = origen
+        self.destino = destino
+        self.user = propietario
+        self.vuelo = vuelo
+        self.pasajero = Pasajero(propietario, self)
+        self.id = Boleto.cont
 
-    private static final long serialVersionUID = 1L;
+        self.cantidadMascotasCabina = 0
+        self.cantidadMascotasBodega = 0
+        self.status = "Pendiente"
+        self.checkInRealizado = False
 
-    private static int cont = 0;
-    private int id;
+        self.mascotas = []
+        self.equipaje = []
+        self.descuentos = []
+        self.serviciosContratados = []
 
-    // Atributos
-    private String tipo;
-    private Usuario user;
-    private String status = "Pendiente";
-    private String origen;
-    private String destino;
-    private boolean checkInRealizado = false;
-    private ArrayList<ServiciosEspeciales> serviciosContratados = new ArrayList<>();
-    private ArrayList<Animal> mascotas = new ArrayList<>();
-    private int cantidadMascotasCabina = 0;
-    private int cantidadMascotasBodega = 0;
+        self.tipo = None
+        self.valor = None
+        self.asiento = None
+        self.valorInicial = None
+        self.valorEquipaje = None
 
-    private float valor;
+    def updateValor(self):
+        temp = 0
+        for maleta in self.equipaje:
+            temp += maleta.calcularPrecio()
 
-    private ArrayList<Maleta> equipaje = new ArrayList<>();
-    private Asiento asiento;
-    private Pasajero pasajero;
+        self.valorEquipaje = temp
+        self.valor = self.valorInicial + temp
 
-    // ...precios
-    private float valorInicial;
-    private float valorEquipaje;
-    // precios...
+    # Actualiza el valor, va en relacion con la funcionalidad reasignar asiento
 
-    // Some atributos...
-    private ArrayList<Descuento> descuentos = new ArrayList<>();
-    private Vuelo vuelo;
+    def updateValorBase(self):
+        self.valor = self.valorInicial + self.valorEquipaje
 
-    public Boleto(String origen, String destino, Usuario propietario, Vuelo vuelo) {
-        cont++;
-        this.origen = origen;
-        this.destino = destino;
-        this.user = propietario;
-        this.vuelo = vuelo;
-        this.pasajero = new Pasajero(propietario, this);
-        this.id = cont;
-    }
+    def asignarAsiento(self, asiento):
+        asiento.asignarBoleto(self)
 
-    public void updateValor() {
-        int temp = 0;
-        for (Maleta maleta : equipaje) {
-            temp += maleta.calcularPrecio();
-        }
-        this.valorEquipaje = temp;
-        this.valor = this.valorInicial + temp;
-    }
+    def setAsiento(self, asiento):
+        self.asiento = asiento
+        self.valorInicial = asiento.getValor()
+        self.valor = self.valorInicial
+        self.tipo = asiento.getTipo()
 
-    // Actualiza el valor, va en relacion con la funcionalidad reasignar asiento
-    public void updateValorBase() {
-        this.valor = this.valorInicial + this.valorEquipaje;
-    }
+    # Actualiza un asiento asignado a un boleto a otro asiento, va de la mano con
+    # la funcionalidad reasignar asiento
 
-    public void asignarAsiento(Asiento asiento) {
-        asiento.asignarBoleto(this);
-    }
+    def upgradeAsiento(self, prevAsiento, newAsiento):
+        self.asiento = newAsiento
+        self.valorInicial = newAsiento.getValor()
+        self.valor = self.valorInicial
+        self.tipo = newAsiento.getTipo()
 
-    // Asigna un asiento al boleto, pero no se ejecuta el proceso de comprar hasta q
-    // se llame el metodo
-    public void setAsiento(Asiento asiento) {
-        this.asiento = asiento;
-        this.valorInicial = asiento.getValor();
-        this.valor = valorInicial;
-        this.tipo = asiento.getTipo();
-    }
+        temp = 0
+        for maleta in self.equipaje:
+            temp += maleta.calcularPrecio()
 
-    // Actualiza un asiento asignado a un boleto a otro asiento, va de la mano con
-    // la funcionalidad reasignar asiento
-    public void upgradeAsiento(Asiento prevAsiento, Asiento newAsiento) {
-        this.asiento = newAsiento;
-        this.valorInicial = newAsiento.getValor();
-        this.valor = valorInicial;
-        this.tipo = newAsiento.getTipo();
+        self.valorEquipaje = temp
+        self.valor = self.valorInicial + temp
 
-        int temp = 0;
-        for (Maleta maleta : equipaje) {
-            temp += maleta.calcularPrecio();
-        }
+        prevAsiento.desasignarBoleto()
+        newAsiento.asignarBoleto(self)
 
-        this.valorEquipaje = temp;
-        this.valor = this.valorInicial + temp;
+    # Actualiza el asiento a vip segun lo que seleccione el usuario, va de la mano
+    # con la funcionalidad canjear millas
+    def upgradeAsientoMillas(self, prevAsiento, newAsiento):
+        self.asiento = newAsiento
+        self.valorInicial = prevAsiento.getValor()
+        self.valor = self.valorInicial
+        self.tipo = newAsiento.getTipo()
+        self.valor = self.valorInicial + self.valorEquipaje
+        prevAsiento.desasignarBoleto()
+        newAsiento.asignarBoleto(self)
 
-        prevAsiento.desasignarBoleto();
-        newAsiento.asignarBoleto(this);
-    }
+    def reasignarAsiento(self, asiento):
+        self.asiento = asiento
+        self.valorInicial = asiento.getValor() * (float)(1.1)
+        self.valor = self.valorInicial
+        self.tipo = asiento.getTipo()
 
-    // Actualiza el asiento a vip segun lo que seleccione el usuario, va de la mano
-    // con la funcionalidad canjear millas
-    public void upgradeAsientoMillas(Asiento prevAsiento, Asiento newAsiento) {
-        this.asiento = newAsiento;
-        this.valorInicial = prevAsiento.getValor();
-        this.valor = valorInicial;
-        this.tipo = newAsiento.getTipo();
-        this.valor = this.valorInicial + this.valorEquipaje;
-        prevAsiento.desasignarBoleto();
-        newAsiento.asignarBoleto(this);
-    }
+    def anadirServiciosEspeciales(self, servicio):
+        if (servicio == ServiciosEspeciales.MASCOTA_EN_CABINA):
+            self.cantidadMascotasCabina += 1
+        if (servicio == ServiciosEspeciales.MASCOTA_EN_BODEGA):
+            self.cantidadMascotasBodega += 1
+        self.serviciosContratados.append(servicio)
 
-    public void reasignarAsiento(Asiento asiento) {
-        this.asiento = asiento;
-        this.valorInicial = asiento.getValor() * (float) (1.1);
-        this.valor = valorInicial;
-        this.tipo = asiento.getTipo();
-    }
+    def anadirServiciosMascota(self, mascota):
+        self.mascotas.append(mascota)
 
-    public void anadirServiciosEspeciales(ServiciosEspeciales servicio) {
-        if (servicio == ServiciosEspeciales.MASCOTA_EN_CABINA) {
-            this.cantidadMascotasCabina++;
-        }
-        if (servicio == ServiciosEspeciales.MASCOTA_EN_BODEGA) {
-            this.cantidadMascotasBodega++;
-        }
-        this.serviciosContratados.add(servicio);
-    }
+    def resetEquipaje(self):
+        self.equipaje = []
 
-    public void anadirServiciosMascota(Animal mascota) {
-        this.mascotas.add(mascota);
-    }
+    def getOrigenDestino(self):
+        return self.origen + "-" + self.destino
 
-    public void resetEquipaje() {
-        this.equipaje = new ArrayList<>();
-        ;
-    }
+    def addEquipaje(self, maleta):
+        self.equipaje.append(maleta)
+        self.updateValor()
 
-    public String getOrigenDestino() {
-        return this.origen + "-" + this.destino;
-    }
+    def getInfo(self):
 
-    public void addEquipaje(Maleta maleta) {
-        this.equipaje.add(maleta);
-        this.updateValor();
-    }
+        return negrita("Precio: ") + colorTexto("$" + self.valor, "verde") + negrita(", Tipo: ") + self.tipo + negrita(", Origen-Destino: ") + self.getOrigenDestino() + negrita(", Numero de asiento: ") + self.asiento.getN_silla() + negrita(", Estado: ") + self.status + negrita(", N. Maletas: ") + self.equipaje.size() + negrita(", Servicios contratados: ") + self.serviciosContratados.size()
 
-    public String getInfo() {
-        if (this.equipaje == null) {
-            return negrita("Precio: ") + colorTexto("$" + this.valor, "verde") +
-                    negrita(", Tipo: ") + this.tipo +
-                    negrita(", Origen-Destino: ") + this.getOrigenDestino() +
-                    negrita(", Numero de asiento: ") + this.asiento.getN_silla() +
-                    negrita(", Estado: ") + this.status +
-                    negrita(", N. Maletas: ") + 0 +
-                    negrita(", Servicios contratados: ") + this.serviciosContratados.size();
+    # ...Metodos def get yself set...
 
-        } else {
-            return negrita("Precio: ") + colorTexto("$" + this.valor, "verde") +
-                    negrita(", Tipo: ") + this.tipo +
-                    negrita(", Origen-Destino: ") + this.getOrigenDestino() +
-                    negrita(", Numero de asiento: ") + this.asiento.getN_silla() +
-                    negrita(", Estado: ") + this.status +
-                    negrita(", N. Maletas: ") + this.equipaje.size() +
-                    negrita(", Servicios contratados: ") + this.serviciosContratados.size();
+    def getId(self):
+        return self.id
 
-        }
-    }
+    def setId(self, id):
+        self.id = id
 
-    // ...Metodos get y set...
+    def getTipo(self):
+        return self.tipo
 
-    public int getId() {
-        return this.id;
-    }
+    def setTipo(self, tipo):
+        self.tipo = tipo
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    def getUser(self):
+        return self.user
 
-    public String getTipo() {
-        return this.tipo;
-    }
+    def setUser(self, user):
+        self.user = user
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
+    def getStatus(self):
+        return self.status
 
-    public Usuario getUser() {
-        return this.user;
-    }
+    def setStatus(self, status):
+        self.status = status
 
-    public void setUser(Usuario user) {
-        this.user = user;
-    }
+    def getOrigen(self):
+        return self.origen
 
-    public String getStatus() {
-        return this.status;
-    }
+    def setOrigen(self, origen):
+        self.origen = origen
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    def getDestino(self):
+        return self.destino
 
-    public String getOrigen() {
-        return this.origen;
-    }
+    def setDestino(self, destino):
+        self.destino = destino
 
-    public void setOrigen(String origen) {
-        this.origen = origen;
-    }
+    def getValor(self):
+        return self.valor
 
-    public String getDestino() {
-        return this.destino;
-    }
+    def setValor(self, valor):
+        self.valor = valor
 
-    public void setDestino(String destino) {
-        this.destino = destino;
-    }
+    def getEquipaje(self):
+        return self.equipaje
 
-    public float getValor() {
-        return this.valor;
-    }
+    def setEquipaje(self, equipaje):
+        self.equipaje = equipaje
 
-    public void setValor(float valor) {
-        this.valor = valor;
-    }
+    def getAsiento(self):
+        return self.asiento
 
-    public ArrayList<Maleta> getEquipaje() {
-        return this.equipaje;
-    }
+    def getPasajero(self):
+        return self.pasajero
 
-    public void setEquipaje(ArrayList<Maleta> equipaje) {
-        this.equipaje = equipaje;
-    }
+    def setPasajero(self, pasajero):
+        self.pasajero = pasajero
 
-    public Asiento getAsiento() {
-        return this.asiento;
-    }
+    def getValorInicial(self):
+        return self.valorInicial
 
-    public Pasajero getPasajero() {
-        return this.pasajero;
-    }
+    def setValorInicial(self, valorInicial):
+        self.valorInicial = valorInicial
 
-    public void setPasajero(Pasajero pasajero) {
-        this.pasajero = pasajero;
-    }
+    def getValorEquipaje(self):
+        return self.valorEquipaje
 
-    public float getValorInicial() {
-        return this.valorInicial;
-    }
+    def setValorEquipaje(self, valorEquipaje):
+        self.valorEquipaje = valorEquipaje
 
-    public void setValorInicial(float valorInicial) {
-        this.valorInicial = valorInicial;
-    }
+    def getVuelo(self):
+        return self.vuelo
 
-    public float getValorEquipaje() {
-        return this.valorEquipaje;
-    }
+    def setVuelo(self, vuelo):
+        self.vuelo = vuelo
 
-    public void setValorEquipaje(float valorEquipaje) {
-        this.valorEquipaje = valorEquipaje;
-    }
+    def getCheckInRealizado(self):
+        return self.checkInRealizado
 
-    public Vuelo getVuelo() {
-        return this.vuelo;
-    }
+    def setCheckInRealizado(self, checkInRealizado):
+        self.checkInRealizado = checkInRealizado
 
-    public void setVuelo(Vuelo vuelo) {
-        this.vuelo = vuelo;
-    }
+    def getServiciosContratados(self):
+        return self.serviciosContratados
 
-    public boolean getCheckInRealizado() {
-        return this.checkInRealizado;
-    }
+    def setServiciosContratados(self, serviciosContratados):
+        self.serviciosContratados = serviciosContratados
 
-    public void setCheckInRealizado(boolean checkInRealizado) {
-        this.checkInRealizado = checkInRealizado;
-    }
+    def getMascotasEnCabina(self):
+        return self.cantidadMascotasCabina
 
-    public ArrayList<ServiciosEspeciales> getServiciosContratados() {
-        return this.serviciosContratados;
-    }
+    def getMascotasEnBodega(self):
+        return self.cantidadMascotasBodega
 
-    public void setServiciosContratados(ArrayList<ServiciosEspeciales> serviciosContratados) {
-        this.serviciosContratados = serviciosContratados;
-    }
-
-    public int getMascotasEnCabina() {
-        return this.cantidadMascotasCabina;
-    }
-
-    public int getMascotasEnBodega() {
-        return this.cantidadMascotasBodega;
-    }
-
-    public ArrayList<Animal> getMascotas() {
-        return this.mascotas;
-    }
-}
+    def getMascotas(self):
+        return self.mascotas

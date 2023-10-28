@@ -1,142 +1,94 @@
-package gestorAplicacion.Aerolinea;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 
-import gestorAplicacion.Cuenta.*;
+class Maleta(RestriccionesMaleta):
 
-import static uiMain.Estetica.*;
+    precioMaleta = 10.0
+    excedente = 0
 
-public class Maleta implements Serializable, RestriccionesMaleta {
+    def __init__(self, id, peso, largo, ancho, alto):
+        self.id = id
+        self.peso = peso
+        self.largo = largo
+        self.ancho = ancho
+        self.alto = alto
 
-    private static final long serialVersionUID = 1L;
+        self.pasajero = None
+        self.boleto = None
+        self.destino_origen = None
+        self.estado = None
 
-    private static final double precioMaleta = 10.0;
-    private static double excedente;
-    private int id;
-    private int peso;
-    private int largo;
-    private int ancho;
-    private int alto; // Al fin y al cabo es un volumen
+    def verificarRestricciones(self):
+        if (self.peso <= RestriccionesMaleta.peso and self.ancho <= RestriccionesMaleta.ancho
+                and self.alto <= RestriccionesMaleta.alto and self.largo <= RestriccionesMaleta.largo
+                and self.peso <= RestriccionesMaleta.peso):
+            return True
+        else:
+            return False
 
-    private Pasajero pasajero; //
-    private Boleto boleto;
-    private String destino_origen;
-    private String estado;
+    def calcularPrecio(self):
+        dimensionesSuma = (self.alto + self.ancho + self.largo)
+        pesoFloat = self.peso
+        precio = dimensionesSuma * 0.2 * pesoFloat * 0.2  # Fórmula corregida
+        # Valor fijo de $5
+        return ((precio * 0.5)) + 5  # Convertimos el resultado final a int
 
-    public Maleta(int id, int peso, int largo, int ancho, int alto) {
-        this.id = id;
-        this.peso = peso;
-        this.largo = largo;
-        this.ancho = ancho;
-        this.alto = alto;
-        Maleta.excedente = 0.0;
-    }
+    def asignarBoleto(self, boleto):
+        self.boleto = boleto
+        self.pasajero = boleto.getPasajero()
+        self.destino_origen = boleto.getOrigenDestino()
 
-    public boolean verificarRestricciones() {
-        if (this.peso <= RestriccionesMaleta.peso && this.ancho <= RestriccionesMaleta.ancho
-                && this.alto <= RestriccionesMaleta.alto && this.largo <= RestriccionesMaleta.largo
-                && this.peso <= RestriccionesMaleta.peso) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+    # ...Metodos def get y set.
 
-    public int calcularPrecio() {
-        float dimensionesSuma = (float) (this.alto + this.ancho + this.largo);
-        float pesoFloat = (float) this.peso;
-        float precio = dimensionesSuma * 0.2f * pesoFloat * 0.2f; // Fórmula corregida
-        // Valor fijo de $5
-        return ((int) (precio * 0.5)) + 5; // Convertimos el resultado final a int
-    }
+    def getId(self):
+        return self.id
 
-    public void asignarBoleto(Boleto boleto) {
-        this.boleto = boleto;
-        this.pasajero = boleto.getPasajero();
-        this.destino_origen = boleto.getOrigenDestino();
-    }
+    def setId(self, id):
+        self.id = id
 
-    // ...Metodos get y set...
+    def getPeso(self):
+        return self.peso
 
-    public static double getExcedente() {
-        return precioMaleta;
-    }
+    def setPeso(self, peso):
+        self.peso = peso
 
-    public static void setExcedente(double excedentes) {
-        excedente = excedentes;
-    }
+    def getLargo(self):
+        return self.largo
 
-    public int getId() {
-        return this.id;
-    }
+    def setLargo(self, largo):
+        self.largo = largo
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    def getAncho(self):
+        return self.ancho
 
-    public int getPeso() {
-        return this.peso;
-    }
+    def setAncho(self, ancho):
+        self.ancho = ancho
 
-    public void setPeso(int peso) {
-        this.peso = peso;
-    }
+    def getAlto(self):
+        return self.alto
 
-    public int getLargo() {
-        return this.largo;
-    }
+    def setAlto(self, alto):
+        self.alto = alto
 
-    public void setLargo(int largo) {
-        this.largo = largo;
-    }
+    def getPasajero(self):
+        return self.pasajero
 
-    public int getAncho() {
-        return this.ancho;
-    }
+    def setPasajero(self, pasajero):
+        self.pasajero = pasajero
 
-    public void setAncho(int ancho) {
-        this.ancho = ancho;
-    }
+    def getBoleto(self):
+        return self.boleto
 
-    public int getAlto() {
-        return this.alto;
-    }
+    def setBoleto(self, boleto):
+        self.boleto = boleto
 
-    public void setAlto(int alto) {
-        this.alto = alto;
-    }
+    def getDestino_origen(self):
+        return self.destino_origen
 
-    public Pasajero getPasajero() {
-        return this.pasajero;
-    }
+    def setDestino_origen(self, destino_origen):
+        self.destino_origen = destino_origen
 
-    public void setPasajero(Pasajero pasajero) {
-        this.pasajero = pasajero;
-    }
+    def getEstado(self):
+        return self.estado
 
-    public Boleto getBoleto() {
-        return this.boleto;
-    }
-
-    public void setBoleto(Boleto boleto) {
-        this.boleto = boleto;
-    }
-
-    public String getDestino_origen() {
-        return this.destino_origen;
-    }
-
-    public void setDestino_origen(String destino_origen) {
-        this.destino_origen = destino_origen;
-    }
-
-    public String getEstado() {
-        return this.estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-}
+    def setEstado(self, estado):
+        self.estado = estado

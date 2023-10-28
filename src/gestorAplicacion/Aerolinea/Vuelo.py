@@ -19,83 +19,70 @@ class Vuelo:
             id = str(x)
             hSalida = Vuelo.generarHora()
             hLlegada = "Nn"
-            vuelos.append(Vuelo(origen, destino, aerolinea, id, hSalida, hLlegada))
+            vuelos.append(
+                Vuelo(origen, destino, aerolinea, id, hSalida, hLlegada))
         return vuelos
-    
+
     @staticmethod
     def generarHora():
         horas = [
-                "08:00 AM",
-                "09:15 AM",
-                "10:30 AM",
-                "11:45 AM",
-                "12:00 PM",
-                "01:15 PM",
-                "02:30 PM",
-                "03:45 PM",
-                "04:00 PM",
-                "05:15 PM"]
-        return horas[1] #implmeentar con random
-    
+            "08:00 AM",
+            "09:15 AM",
+            "10:30 AM",
+            "11:45 AM",
+            "12:00 PM",
+            "01:15 PM",
+            "02:30 PM",
+            "03:45 PM",
+            "04:00 PM",
+            "05:15 PM"]
+        return horas[1]  # implmeentar con random
 
     def generarAsientos(self, economicos,  premium, base):
         for i in range(0, premium):
             self.asientos.append(Asiento("Vip", i, (base * 1.25)))
-        
+
         for j in range(0, economicos):
             self.asientos.append(Asiento("Economico", j, base))
-        
+
     def getOrigenDestino(self):
         return f"{self.ORIGEN} - {self.DESTINO}"
-    
+
     def getInfo(self):
         return f"Id: {self.ID}, Origen: {self.ORIGEN} , Destino: {self.DESTINO} , Hora salida: {self.horarioSalida}"
 
-    ArrayList < Asiento > getAsientos()
+    def getAsientos(self):
         return self.asientos
-    
 
-    void setAsientos(ArrayList < Asiento > asientos)
+    def setAsientos(self, asientos):
         self.asientos = asientos
-    
 
-    getAEROLINEA()
+    def getAEROLINEA(self):
         return self.AEROLINEA
-    
 
-    getID()
+    def getID(self):
         return self.ID
-    
 
-    getHorarioSalida()
+    def getHorarioSalida(self):
         return self.horarioSalida
-    
 
-    void setHorarioSalida(horarioSalida)
+    def setHorarioSalida(self, horarioSalida):
         self.horarioSalida = horarioSalida
-    
 
-    getHorarioLlegada()
+    def getHorarioLlegada(self):
         return self.horarioLlegada
-    
 
-    void setHorarioLlegada(horarioLlegada)
+    def setHorarioLlegada(self, horarioLlegada):
         self.horarioLlegada = horarioLlegada
-    
 
-    getDESTINO()
+    def getDESTINO(self):
         return self.DESTINO
-    
 
-    getORIGEN()
+    def getORIGEN(self):
         return self.ORIGEN
-    
 
-    ArrayList < Maleta > getEquipajes()
+    def getEquipajes(self):
         return self.equipajes
-    
 
-    void setEquipajes(ArrayList < Maleta > equipajes)
+    def setEquipajes(self, equipajes):
         self.equipajes = equipajes
-    
-

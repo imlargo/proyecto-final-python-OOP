@@ -1,94 +1,72 @@
+class Asiento:
 
-public class Asiento implements Serializable {
-    private static final long serialVersionUID = 1L;
+    def __init__(self, tipo, n_silla,  valor):
+        self.tipo = tipo
+        self.n_silla = n_silla
+        self.valor = valor
+        self.disponible = True  # Indica si el asiento está disponible o no
+        # Estado del asiento (ejemplo: "Disponible", "Asignado")
+        self.status = "Disponible"
 
-    private String tipo; // Tipo de asiento (ejemplo: "Económico", "Primera Clase")
-    private Boolean vip; // Indica si es un asiento VIP o no
-    private Pasajero pasajero; // Pasajero asignado al asiento
-    private int n_silla; // Número de silla del asiento
-    private boolean disponible = true; // Indica si el asiento está disponible o no
-    private String status = "Disponible"; // Estado del asiento (ejemplo: "Disponible", "Asignado")
-    private Boleto boleto; // Boleto asociado al asiento
-    private final float valor; // Valor base del asiento
+        self.vip = None  # Indica si es un asiento VIP o no
+        self.pasajero = None  # asignado al asiento
+        self.boleto = None  # asociado al asiento
 
-    public Asiento(String tipo, int n_silla, float valor) {
-        this.tipo = tipo;
-        this.n_silla = n_silla;
-        this.valor = valor;
-    }
+    def asignarBoleto(self, boleto):
+        self.boleto = boleto
+        self.pasajero = boleto.getPasajero()
+        self.disponible = False
+        self.status = "Asignado"
 
-    public void asignarBoleto(Boleto boleto) {
-        this.boleto = boleto;
-        this.pasajero = boleto.getPasajero();
-        this.disponible = false;
-        this.status = "Asignado";
-    }
-    public void desasignarBoleto() {
-        this.boleto = null;
-        this.pasajero = null;
-        this.disponible = true;
-        this.status = "Disponible";
-    }
+    def desasignarBoleto(self):
+        self.boleto = None
+        self.pasajero = None
+        self.disponible = True
+        self.status = "Disponible"
 
-    public String getInfo() {
-        return n_silla + ". Tipo: " + tipo + ", Valor: $" + valor;
-    }
+    def getInfo(self):
+        return self.n_silla + ". Tipo: " + self.tipo + ", Valor: $" + self.valor
 
-    // Métodos de acceso (Getters y Setters)
+    # Métodos de acceso (Getters y Setters)
 
-    public String getTipo() {
-        return this.tipo;
-    }
+    def getTipo(self):
+        return self.tipo
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
+    def setTipo(self, tipo):
+        self.tipo = tipo
 
-    public Pasajero getPasajero() {
-        return this.pasajero;
-    }
+    def getPasajero(self):
+        return self.pasajero
 
-    public void setPasajero(Pasajero pasajero) {
-        this.pasajero = pasajero;
-    }
+    def setPasajero(self, pasajero):
+        self.pasajero = pasajero
 
-    public int getN_silla() {
-        return this.n_silla;
-    }
+    def getN_silla(self):
+        return self.n_silla
 
-    public void setN_silla(int n_silla) {
-        this.n_silla = n_silla;
-    }
+    def setN_silla(self, n_silla):
+        self.n_silla = n_silla
 
-    public boolean isDisponible() {
-        return this.disponible;
-    }
+    def isDisponible(self):
+        return self.disponible
 
-    public boolean getDisponible() {
-        return this.disponible;
-    }
+    def getDisponible(self):
+        return self.disponible
 
-    public void setDisponible(boolean disponible) {
-        this.disponible = disponible;
-    }
+    def setDisponible(self, disponible):
+        self.disponible = disponible
 
-    public String getStatus() {
-        return this.status;
-    }
+    def getStatus(self):
+        return self.status
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    def setStatus(self, status):
+        self.status = status
 
-    public Boleto getBoleto() {
-        return this.boleto;
-    }
+    def getBoleto(self):
+        return self.boleto
 
-    public void setBoleto(Boleto boleto) {
-        this.boleto = boleto;
-    }
+    def setBoleto(self, boleto):
+        self.boleto = boleto
 
-    public float getValor() {
-        return this.valor;
-    }
-}
+    def getValor(self):
+        return self.valor

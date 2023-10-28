@@ -1,45 +1,24 @@
-package gestorAplicacion.Aerolinea;
+class Pasajero:
 
-import java.io.Serializable;
+    def __init__(self, user, boleto):
+        self.nombre = user.getNombre()
+        self.user = user
+        self.boleto = boleto
 
-import gestorAplicacion.Cuenta.Usuario;
-import java.util.ArrayList;
+    def getNombre(self):
+        return self.nombre
 
-import static uiMain.Estetica.*;
+    def setNombre(self, nombre):
+        self.nombre = nombre
 
-public class Pasajero implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private String nombre;
-    private Usuario user;
-    private Boleto boleto;
+    def getUser(self):
+        return self.user
 
-    public Pasajero(Usuario user, Boleto boleto) {
-        this.nombre = user.getNombre();
-        this.user = user;
-        this.boleto = boleto;
-    }
+    def setUser(self, user):
+        self.user = user
 
-    public String getNombre() {
-        return this.nombre;
-    }
+    def getBoleto(self):
+        return self.boleto
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Usuario getUser() {
-        return this.user;
-    }
-
-    public void setUser(Usuario user) {
-        this.user = user;
-    }
-
-    public Boleto getBoleto() {
-        return this.boleto;
-    }
-
-    public void setBoleto(Boleto boleto) {
-        this.boleto = boleto;
-    }
-}
+    def setBoleto(self, boleto):
+        self.boleto = boleto
