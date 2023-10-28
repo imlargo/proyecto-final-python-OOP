@@ -9,18 +9,6 @@ import gestorAplicacion.Aerolinea.*;
 import gestorAplicacion.Cuenta.*;
 import gestorAplicacion.Descuentos.*;
 import gestorAplicacion.Mascotas.*;
-
-/**
- * La clase Boleto representa un boleto de una aerolínea que un usuario ha
- * adquirido
- * para un vuelo específico. Contiene información sobre el origen, destino,
- * pasajero,
- * asiento, equipaje, servicios contratados y otros detalles relacionados con el
- * boleto.
- * Además, permite realizar operaciones como la asignación de asientos, la
- * adición de
- * equipaje, y la actualización del valor del boleto.
- */
 public class Boleto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -55,15 +43,6 @@ public class Boleto implements Serializable {
     private ArrayList<Descuento> descuentos = new ArrayList<>();
     private Vuelo vuelo;
 
-    /**
-     * Constructor de la clase Boleto que crea un nuevo boleto para un vuelo con
-     * el origen y destino especificados.
-     *
-     * @param origen      El origen del vuelo.
-     * @param destino     El destino del vuelo.
-     * @param propietario El usuario que compra el boleto.
-     * @param vuelo       El vuelo al que está asociado el boleto.
-     */
     public Boleto(String origen, String destino, Usuario propietario, Vuelo vuelo) {
         cont++;
         this.origen = origen;
@@ -74,9 +53,6 @@ public class Boleto implements Serializable {
         this.id = cont;
     }
 
-    /**
-     * Actualiza el valor del boleto tomando en cuenta el precio del equipaje.
-     */
     public void updateValor() {
         int temp = 0;
         for (Maleta maleta : equipaje) {

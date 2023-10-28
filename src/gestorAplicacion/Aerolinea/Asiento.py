@@ -1,12 +1,3 @@
-package gestorAplicacion.Aerolinea;
-
-import java.io.Serializable;
-import gestorAplicacion.Aerolinea.*;
-import static uiMain.Estetica.*;
-
-/**
- * Clase que representa un asiento en una aerolínea que esta contenido en un vuelo.
- */
 
 public class Asiento implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -20,34 +11,18 @@ public class Asiento implements Serializable {
     private Boleto boleto; // Boleto asociado al asiento
     private final float valor; // Valor base del asiento
 
-    /**
-     * Constructor de la clase Asiento.
-     *
-     * @param tipo  Tipo de asiento.
-     * @param n_silla  Número de silla.
-     * @param valor  Valor del asiento.
-     */
     public Asiento(String tipo, int n_silla, float valor) {
         this.tipo = tipo;
         this.n_silla = n_silla;
         this.valor = valor;
     }
 
-    /**
-     * Asigna un boleto al asiento, marcándolo como "Asignado" y asociando un pasajero.
-     *
-     * @param boleto  Boleto a asignar.
-     */
     public void asignarBoleto(Boleto boleto) {
         this.boleto = boleto;
         this.pasajero = boleto.getPasajero();
         this.disponible = false;
         this.status = "Asignado";
     }
-
-    /**
-     * Desasigna el boleto del asiento, marcándolo como "Disponible" y desvinculando al pasajero.
-     */
     public void desasignarBoleto() {
         this.boleto = null;
         this.pasajero = null;
@@ -55,11 +30,6 @@ public class Asiento implements Serializable {
         this.status = "Disponible";
     }
 
-    /**
-     * Obtiene la información del asiento.
-     *
-     * @return  Información del asiento en formato de cadena.
-     */
     public String getInfo() {
         return n_silla + ". Tipo: " + tipo + ", Valor: $" + valor;
     }
