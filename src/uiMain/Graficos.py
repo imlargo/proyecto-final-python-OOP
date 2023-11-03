@@ -5,6 +5,11 @@ App = tk.Tk()
 
 
 
+def genVentanaInicial():
+    
+    pass
+
+
 def genComprarVuelo():
     
     pass
