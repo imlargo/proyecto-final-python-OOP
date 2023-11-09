@@ -215,8 +215,12 @@ class VentanaInicial:
         p2.grid_columnconfigure(0, weight=1)
 
         saludo = "Bienvenid@ al sistema de venta de vuelos"
-        saludo_label = tk.Label(p3,text=saludo)
+        saludo_label = tk.Label(p3,text=saludo, bg="yellow")
         saludo_label.grid(row=0,column=0,padx=5, pady=5)
+        
+        boton_ingreso = tk.Button(p4, text="Ingreso al sistema")
+        boton_ingreso.pack(side="bottom", pady=5)
+        boton_ingreso.bind("<Button-1>", Ingresar)
         pass
 
 
@@ -314,10 +318,13 @@ def makePopUp():
     pass
 
 
-#ventanaInicial = VentanaInicial()
-#ventanaInicial.generar()
+def Ingresar(evento):
+    mainMenu.generar()
+
+ventanaInicial = VentanaInicial()
+ventanaInicial.generar()
 
 mainMenu = MainMenu()
-mainMenu.generar()
+#mainMenu.generar()
 
 App.mainloop()
