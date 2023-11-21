@@ -1,100 +1,118 @@
 class Usuario:
+    """
+    Clase que representa a un usuario.
 
-    def __init__(self, nombre, mail, contrasena, id):
-        self.dinero = None
-        self.millas = None
+    Atributos:
+        nombre (str): Nombre del usuario.
+        mail (str): Correo electrónico del usuario.
+        dinero (float): Dinero disponible del usuario.
+        millas (int): Millas acumuladas por el usuario.
+        historial (list): Lista de boletos comprados por el usuario.
+        descuentos (list): Lista de descuentos disponibles para el usuario.
+    """
 
+    def __init__(self, nombre, mail, dinero):
+        """
+        Inicializa un objeto de la clase Usuario.
+        """
+        self.nombre = nombre
+        self.mail = mail
+        self.dinero = dinero
+        self.millas = 100
         self.historial = []
         self.descuentos = []
-        self.nombre = nombre
-        self.id = id
-        self.mail = mail
-        self.contrasena = contrasena
-
+        
     def comprarBoleto(self, boleto):
-        self.dinero -= boleto.getValor()
-        self.millas += boleto.getValor() * 0.1
+        """
+        Permite al usuario comprar un boleto.
+        """
+        self.dinero -= boleto.valor
+        self.millas += int(boleto.valor * 0.1)
         self.historial.append(boleto)
-        boleto.setStatus("Comprado")
+        boleto.status = "Comprado"
+        boleto.asignarAsiento(boleto.asiento)
 
+    def reasignarBoleto(self, newBoleto, indexBoleto):
+        """
+        Permite al usuario reasignar un boleto.
+        """
+        costo = newBoleto.calcularReasignacion(self.historial[indexBoleto])
+        self.dinero -= costo
+        self.millas -= int(self.historial[indexBoleto].valor * 0.1)
+        newBoleto.status = "Reasignado"
+        self.historial[indexBoleto] = newBoleto
+
+    def verificarMillas(self, valor):
+        """
+        Verifica si el usuario tiene suficientes millas.
+        """
+        return True if self.millas >= valor else False
+    
+    def canjearMillas(self, boleto, descuento):
+        """
+        Permite al usuario canjear millas por un descuento.
+        """
+        descuento.generar(self, boleto)
+        self.descontarMillas(descuento.getCostoMillas())
+        ahorrado = descuento.aplicarDescuento()
+        return ahorrado
+    
     def comprarBoletoReasig(self, boleto):
-        self.dinero -= boleto.getValor()
-        self.millas += boleto.getValor() * 0.1
-        boleto.setStatus("Comprado")
-
-    def reasignarBoleto(self, boleto):
-        self.dinero += (boleto.getValor() * 0.9)
-        self.millas -= boleto.getValor() * 0.1
+        """
+        Permite al usuario comprar un boleto reasignado.
+        """
+        self.dinero -= boleto.valor
+        self.millas += int(boleto.valor * 0.1)
+        boleto.status = "Comprado"
 
     def cancelarBoleto(self, boleto):
-        self.dinero += (boleto.getValor() * 0.5)
-        self.millas -= (boleto.getValor() * 0.1)
+        """
+        Permite al usuario cancelar un boleto.
+        """
+        self.dinero += int(boleto.valor * 0.5)
+        self.millas -= int(boleto.valor * 0.1)
+        boleto.status = "Cancelado"
+        boleto.asiento.desasignarBoleto()
+        return int(boleto.valor * 0.5)
 
     def getInfo(self):
-        return f"Usuario: {self.nombre} // ID - {self.id}\nBalance: {self.dinero}\nMillas: {self.millas}\nVuelos comprados: {len(self.historial)}\nDescuentos canjeados: {len(self.descuentos)}"
-
-    def verificarContrasena(self, contrasena):
-        if (self.contrasena == (contrasena)):
-            return True
-        else:
-            return False
-
+        """
+        Obtiene la información del usuario.
+        """
+        return {
+            "Usuario": self.nombre,
+            "Balance": f"${round(self.dinero,2)}",
+            "Millas": self.millas,
+            "Vuelos comprados": len(self.historial),
+            "Descuentos canjeados": len(self.descuentos)
+        }
+        
     def depositarDinero(self, valor):
+        """
+        Permite al usuario depositar dinero.
+        """
         self.dinero += valor
 
     def realizarPago(self, valor):
+        """
+        Permite al usuario realizar un pago.
+        """
         self.dinero -= valor
 
     def addDescuento(self, descuento):
+        """
+        Permite al usuario agregar un descuento.
+        """
         self.descuentos.add(descuento)
 
     def descontarMillas(self, valor):
+        """
+        Permite al usuario descontar millas.
+        """
         self.millas -= valor
 
-    def getDinero(self):
-        return self.dinero
-
-    def setDinero(self, dinero):
-        self.dinero = dinero
-
-    def getId(self):
-        return self.id
-
-    def setId(self, id):
-        self.id = id
-
-    def getNombre(self):
-        return self.nombre
-
-    def setNombre(self, nombre):
-        self.nombre = nombre
-
-    def getMillas(self):
-        return self.millas
-
-    def setMillas(self, millas):
-        self.millas = millas
-
     def getHistorial(self):
+        """
+        Obtiene el historial de boletos comprados por el usuario.
+        """
         return self.historial
-
-    def setHistorial(self, historial):
-        self.historial = historial
-
-    def getDescuentos(self):
-        return self.descuentos
-
-    def setDescuentos(self, descuentos):
-        self.descuentos = descuentos
-
-    def getMail(self):
-        return self.mail
-
-    def setMail(self, mail):
-        self.mail = mail
-
-    def getContrasena(self):
-        return self.contrasena
-
-    def setContrasena(self, contrasena):
-        self.contrasena = contrasena

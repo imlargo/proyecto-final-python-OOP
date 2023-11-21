@@ -1,72 +1,56 @@
-class Asiento:
 
-    def __init__(self, tipo, n_silla,  valor):
+
+class Asiento:
+    """
+    Representa un asiento en un avión o teatro.
+
+    Atributos:
+        tipo (str): Tipo de asiento (Ejemplo: "Vip", "Economico").
+        n_silla (int): Numero de silla.
+        valorBase (float): Valor base del asiento.
+        disponible (bool): Indica si el asiento esta disponible o no.
+        vip (bool): Indica si el asiento es vip o no.
+        status (str): Estado del asiento (ejemplo: "Disponible", "Asignado").
+        boleto (Boleto): Boleto asociado al asiento.
+
+    Metodos:
+        asignarBoleto(self, boleto): Asigna un boleto al asiento.
+        desasignarBoleto(self): Desasigna el boleto del asiento.
+        getInfo(self): Devuelve la informacion de los atributos principales.
+        __str__(self): Devuelve la informacion de los atributos principales.
+    """
+
+    def __init__(self, tipo, n_silla,  valorBase):
+        """
+        Inicializa un objeto de la clase Asiento.
+
+        Args:
+            tipo (str): Tipo de asiento.
+            n_silla (int): Numero de silla.
+            valorBase (float): Valor base del asiento.
+        """
         self.tipo = tipo
         self.n_silla = n_silla
-        self.valor = valor
-        self.disponible = True  # Indica si el asiento está disponible o no
+        self.valorBase = valorBase
+        self.disponible = True
+        self.vip = True if tipo == "Vip" else False
+        
         # Estado del asiento (ejemplo: "Disponible", "Asignado")
         self.status = "Disponible"
-
-        self.vip = None  # Indica si es un asiento VIP o no
-        self.pasajero = None  # asignado al asiento
         self.boleto = None  # asociado al asiento
 
-    def asignarBoleto(self, boleto):
-        self.boleto = boleto
-        self.pasajero = boleto.getPasajero()
+    def asignarBoleto(self, boleto):#se le asigna el boleto  del usuario 
+        self.boleto = boleto        # que lo compró
         self.disponible = False
         self.status = "Asignado"
 
-    def desasignarBoleto(self):
+    def desasignarBoleto(self): #quita el boleto al que esté asignado
         self.boleto = None
-        self.pasajero = None
         self.disponible = True
         self.status = "Disponible"
 
-    def getInfo(self):
-        return f"{self.n_silla}. Tipo: {self.tipo}, Valor: ${self.valor}"
-
-    # Métodos de acceso (Getters y Setters)
-
-    def getTipo(self):
-        return self.tipo
-
-    def setTipo(self, tipo):
-        self.tipo = tipo
-
-    def getPasajero(self):
-        return self.pasajero
-
-    def setPasajero(self, pasajero):
-        self.pasajero = pasajero
-
-    def getN_silla(self):
-        return self.n_silla
-
-    def setN_silla(self, n_silla):
-        self.n_silla = n_silla
-
-    def isDisponible(self):
-        return self.disponible
-
-    def getDisponible(self):
-        return self.disponible
-
-    def setDisponible(self, disponible):
-        self.disponible = disponible
-
-    def getStatus(self):
-        return self.status
-
-    def setStatus(self, status):
-        self.status = status
-
-    def getBoleto(self):
-        return self.boleto
-
-    def setBoleto(self, boleto):
-        self.boleto = boleto
-
-    def getValor(self):
-        return self.valor
+    def getInfo(self): # devuelve  la informacion de los atributos principales
+        return f"{self.n_silla}. Tipo: {self.tipo}, Valor: ${self.valorBase}"
+    
+    def __str__(self):
+        return self.getInfo()

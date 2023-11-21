@@ -1,45 +1,39 @@
 from .Animal import Animal
 
 class Gato(Animal):
+    """
+    Clase que representa a un gato.
 
-    razasExcluidasCabina = ["Siamés", "Bengal", "Sphynx", "Persa"]
-    razasExcluidasBodega = ["Bengal", "Siames"]
+    Atributos:
+        PESO_MAXIMO_BODEGA (float): Peso máximo que un gato puede tener para viajar en la bodega.
+        PESO_MAXIMO_CABINA (float): Peso máximo que un gato puede tener para viajar en la cabina.
+        peso (float): Peso del gato.
+    """
 
     PESO_MAXIMO_BODEGA = 20.0
-    TAMANO_MAXIMO_BODEGA = 30.0
     PESO_MAXIMO_CABINA = 6.0
-    TAMANO_MAXIMO_CABINA = 15.0
 
-    def __init__(self, nombre, raza, tamano, peso):
-        super(nombre, raza)
-        self.tamano = tamano
+    def __init__(self, nombre, raza, peso):
+        """
+        Inicializa un objeto de la clase Gato.
+        """
+        super().__init__(nombre, raza)
         self.peso = peso
-
-    def getPeso(self):
-        return self.peso
-
-    def setPeso(self, peso):
-        self.peso = peso
-
-    def getTamano(self):
-        return self.tamano
-
-    def setTamano(self, tamano):
-        self.tamano = tamano
 
     def puedeViajarEnCabina(self):
-        if (not self.raza in Gato.razasExcluidasCabina and self.getPeso() <= Gato.PESO_MAXIMO_CABINA
-                and self.getTamano() <= Gato.TAMANO_MAXIMO_CABINA):
-            return True
-
-        return False
+        """
+        Determina si el gato puede viajar en la cabina basándose en su peso.
+        """
+        return self.peso <= Gato.PESO_MAXIMO_CABINA
 
     def puedeViajarEnBodega(self):
-        if (not self.raza in Gato.razasExcluidasBodega and self.getPeso() <= Gato.PESO_MAXIMO_BODEGA
-                and self.getTamano() <= Gato.TAMANO_MAXIMO_BODEGA):
-            return True
+        """
+        Determina si el gato puede viajar en la bodega basándose en su peso.
+        """
+        return self.peso <= Gato.PESO_MAXIMO_BODEGA
 
-        return False
-
-    def toString(self):
-        return "nombre: " + self.getNombre() + ", raza: " + self.getRaza() + ", especie: Gato"
+    def __str__(self):
+        """
+        Devuelve una representación en cadena de la información del gato.
+        """
+        return f"Nombre: {self.getNombre()}, Raza: {self.getRaza()}, Peso: {self.peso}, Especie: Gato"

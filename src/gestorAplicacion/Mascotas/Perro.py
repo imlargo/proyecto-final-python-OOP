@@ -1,43 +1,39 @@
 from .Animal import Animal
 
 class Perro(Animal):
+    """
+    Clase que representa a un perro.
 
-    razasExcluidasCabina = ["Bulldog", "Dóberman", "Pitbull", "Rottweiler"]
-    razasExcluidasBodega = ["Pitbull", "Rottweiler"]
+    Atributos:
+        PESO_MAXIMO_BODEGA (float): Peso máximo que un perro puede tener para viajar en la bodega.
+        PESO_MAXIMO_CABINA (float): Peso máximo que un perro puede tener para viajar en la cabina.
+        peso (float): Peso del perro.
+    """
 
     PESO_MAXIMO_BODEGA = 30.0
-    TAMANO_MAXIMO_BODEGA = 30.0
     PESO_MAXIMO_CABINA = 8.0
-    TAMANO_MAXIMO_CABINA = 20.0
 
-    def __init__(self, nombre, raza, tamano, peso):
-        super(nombre, raza)
-        self.tamano = tamano
+    def __init__(self, nombre, raza, peso):
+        """
+        Inicializa un objeto de la clase Perro.
+        """
+        super().__init__(nombre, raza)
         self.peso = peso
-
-    def getPeso(self):
-        return self.peso
-
-    def setPeso(self, peso):
-        self.peso = peso
-
-    def getTamano(self):
-        return self.tamano
-
-    def setTamano(self, tamano):
-        self.tamano = tamano
 
     def puedeViajarEnCabina(self):
-        if ((not (self.raza in Perro.razasExcluidasCabina)) and self.getPeso() <= Perro.PESO_MAXIMO_CABINA
-                and self.getTamano() <= Perro.TAMANO_MAXIMO_CABINA):
-            return True
-        return False
+        """
+        Determina si el perro puede viajar en la cabina basándose en su peso.
+        """
+        return self.peso <= Perro.PESO_MAXIMO_CABINA
 
     def puedeViajarEnBodega(self):
-        if ((not (self.raza in Perro.razasExcluidasBodega)) and self.getPeso() <= Perro.PESO_MAXIMO_BODEGA
-                and self.getTamano() <= Perro.TAMANO_MAXIMO_BODEGA):
-            return True
-        return False
-
+        """
+        Determina si el perro puede viajar en la bodega basándose en su peso.
+        """
+        return self.peso <= Perro.PESO_MAXIMO_BODEGA
+    
     def toString(self):
-        return "nombre: " + self.getNombre() + ", raza: " + self.getRaza() + ", especie: Perro"
+        """
+        Devuelve una representación en cadena de la información del perro.
+        """
+        return f"Nombre: {self.getNombre()}, Raza: {self.getRaza()}, Peso: {self.peso}, Especie: Perro"
